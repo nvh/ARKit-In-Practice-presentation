@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Diff</key>
+	<array>
+		<dict>
+			<key>ModifiedContent</key>
+			<string>        let location = sender.location(in: sender.view)
+        if let result = arView.hitTest(location, types: .existingPlane).first {
+            let anchor = ARAnchor(transform: result.worldTransform)
+            arView.session.add(anchor: anchor)
+        }
+    }
+    var bitMask: UInt32 = 1
+    func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -&gt; SKNode? {
+        if let planeAnchor = anchor as? ARPlaneAnchor {
+            return SKLabelNode(text: "⛳️")
+        }
+        let pin = SKLabelNode(text: "📍")
+        let rect = SKShapeNode(rect: CGRect(x: -pin.frame.width, y: 0, width: pin.frame.width, height: 250))
+        pin.position.y = rect.frame.height - pin.frame.height
+        
+        pin.physicsBody = SKPhysicsBody(rectangleOf: pin.frame.size, center:  CGPoint(x: 0, y: pin.frame.height/2))
+        rect.physicsBody = SKPhysicsBody(edgeLoopFrom: rect.frame)
+        rect.addChild(pin)
+        
+        pin.physicsBody?.collisionBitMask = bitMask
+        rect.physicsBody?.collisionBitMask = bitMask
+        pin.physicsBody?.categoryBitMask = bitMask
+        rect.physicsBody?.categoryBitMask = bitMask
+        bitMask = bitMask &lt;&lt; 1
+        if bitMask == 0 {
+            bitMask = 1
+        }
+        rect.lineWidth = 0
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+            pin.position.y = 0
+            pin.physicsBody = nil
+            rect.physicsBody = nil
+        }
+        return rect
+</string>
+			<key>ModifiedRange</key>
+			<string>{132, 1444}</string>
+			<key>OriginalContent</key>
+			<string></string>
+			<key>OriginalRange</key>
+			<string>{132, 0}</string>
+		</dict>
+	</array>
+	<key>File</key>
+	<string>Chapters/Document1.playgroundchapter/Pages/SpriteKit.playgroundpage/Contents.swift</string>
+</dict>
+</plist>
